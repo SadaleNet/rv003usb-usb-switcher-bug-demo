@@ -5,22 +5,22 @@
 #include "help_functions.h"
 // ./minichlink -D to use nrst, also PD1 needs pullup 
 
+volatile uint8_t keypressed[8] = {0};
 int main()
 {
 	SystemInit();
+	// Enable interrupt nesting for rv003usb software USB library
+	__set_INTSYSCR( __get_INTSYSCR() | 0x02 );
+
 	Delay_Ms(100); // Ensures USB re-enumeration after bootloader or reset; Spec demand >2.5µs ( TDDIS )
 	systick_init();
-	GPIO_Init_All();
-
-	// Convert PD1 from SWIO to GPIO
-	AFIO->PCFR1 &= ~(AFIO_PCFR1_SWCFG);
-	AFIO->PCFR1 |= AFIO_PCFR1_SWCFG_DISABLE;
-
-	ButtonMatrix_Init(&btn_matrix); // Initialize button matrix state
-	Debounce_Init(&debounce_info); // Initialize debounce info
-	// printf( "Start\n");
 
 	usb_setup();
+	uint32_t prev_time = GetSystemTime();
+	for(uint8_t k=0;k<6;k++){
+		keypressed[2+k]=0;
+	}
+
 	while(1)
 	{
 #if RV003USB_EVENT_DEBUGGING
@@ -31,9 +31,14 @@ int main()
 		}
 #endif
 		uint32_t current_time = GetSystemTime();
+		if(current_time-prev_time < 100) {
+			keypressed[2]=0x04; // HID_KEY_A
+		} else if(current_time-prev_time < 1000) {
+			keypressed[2]=0;
+		} else {
+			prev_time = current_time;
+		}
 
-		// Scan the button matrix with debouncing
-		ButtonMatrix_Scan_Debounced(&btn_matrix, &debounce_info, current_time);
 		Delay_Us(10); // Smaller is better, but too small causes hanging. Increase this delay when key map larger.
 
 	}
