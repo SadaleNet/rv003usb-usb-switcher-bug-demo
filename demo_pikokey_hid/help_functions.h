@@ -16,6 +16,7 @@ void systick_init(void)
 	
 	/* enable the SysTick IRQ */
 	NVIC_EnableIRQ(SysTick_IRQn);
+	NVIC_SetPriority(SysTick_IRQn, 0x80); // Enabled preemption
 	
 	/* Set the tick interval to 1ms for normal op */
 	SysTick->CMP = (FUNCONF_SYSTEM_CORE_CLOCK/1000)-1;
