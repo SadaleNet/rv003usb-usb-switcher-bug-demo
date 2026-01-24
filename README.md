@@ -2,7 +2,7 @@
 
 Two demo of the bug.
 
-1. demo_pikokey_hid
+## 1. demo_pikokey_hid
 
 Based on the PikoKey demo. Changes made:
 
@@ -13,7 +13,7 @@ Based on the PikoKey demo. Changes made:
 * Removed unused functions in help_functions.h
 * Reduced the Delay_Ms at the initialization from 100ms to 1ms
 
-2. demo_composite_hid
+## 2. demo_composite_hid
 
 Based on the PikoKey demo. Changes made:
 
