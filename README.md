@@ -9,3 +9,4 @@ Based on the PikoKey demo. Changes made:
 * Made the variable `keypressed` volatile
 * Added `__set_INTSYSCR( __get_INTSYSCR() | 0x02 );` to avoid the USB interrupt getting blocked by another interrupt.
 * Removed unused functions in help_functions.h
+* Reduced the Delay_Ms at the initialization from 100ms to 1ms

@@ -12,7 +12,7 @@ int main()
 	// Enable interrupt nesting for rv003usb software USB library
 	__set_INTSYSCR( __get_INTSYSCR() | 0x02 );
 
-	Delay_Ms(100); // Ensures USB re-enumeration after bootloader or reset; Spec demand >2.5µs ( TDDIS )
+	Delay_Ms(1); // Ensures USB re-enumeration after bootloader or reset; Spec demand >2.5µs ( TDDIS )
 	systick_init();
 
 	usb_setup();
